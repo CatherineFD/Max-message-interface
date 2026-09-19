@@ -1,13 +1,31 @@
 import { observer } from "mobx-react-lite";
-import { activeChatStore } from "../stores/ActiveChatStore";
-import { Message } from "./Message";
-import MessageInput from "./MessageInput";
-import { Alert } from "antd";
+import { activeChatStore } from "../../stores/ActiveChatStore";
+import { Message } from "../Message";
+import MessageInput from "../MessageInput";
+import { Alert, Typography } from "antd";
 
-export const ChatPage = observer(() => {
+const { Title } = Typography;
+
+export const Chat = observer(() => {
     const chat = activeChatStore.currentChat;
 
-    if (!chat) return <div>Выберите чат</div>;
+    if (!chat) return (
+        <div style={{
+            minHeight: '100px',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
+            <Title
+                level={5}
+                style={{
+                    margin: 0
+                }}
+            >Выберите чат
+            </Title>
+        </div>
+    );
 
     return (
         <div>
