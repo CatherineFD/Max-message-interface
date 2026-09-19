@@ -1,0 +1,30 @@
+.message {
+    display: flex;
+    margin: 4px 12px;
+    max-width: 70%;
+}
+
+.incoming { align-self: flex-start; }
+.outgoing { align-self: flex-end; flex-direction: row-reverse; }
+
+.bubble {
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: #fff;
+    position: relative;
+}
+
+.outgoing .bubble { background: #dcf8c6; }
+
+.meta {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-size: 11px;
+    color: #888;
+    justify-content: flex-end;
+    margin-top: 2px;
+}
+
+.status.read { color: #4fc3f7; }
+.status.error { color: #f44336; }
