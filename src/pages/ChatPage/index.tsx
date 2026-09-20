@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
 import {
   MenuFoldOutlined,
@@ -6,12 +6,12 @@ import {
   PlusCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Layout } from 'antd';
-import { ContactStore } from '../../stores/error/ContactStore';
 import Modal from '../../components/Modal';
 import PhoneInput from '../../components/Input/PhoneInput';
 import { Typography } from 'antd';
 import { ChatsSidebar } from '../../components/ChatsSidebar';
 import { Chat as ChatComponent } from '../../components/Chat';
+import { chatsListStore } from '../../stores/ChatsListStore';
 
 const { Title } = Typography;
 
@@ -25,10 +25,10 @@ const siderStyle: React.CSSProperties = {
   top: 0,
   scrollbarWidth: 'thin',
   scrollbarGutter: 'stable',
+  background: '#c9d9e1',
 };
 
 const ChatPage = observer(() => {
-  const contactStore = useMemo(() => new ContactStore(), []);
   const [collapsed, setCollapsed] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [currentPhone, setCurrentPhone] = useState('');
@@ -39,8 +39,8 @@ const ChatPage = observer(() => {
 
   const handleConfirm = useCallback(() => {
     setOpenModal(false);
-    contactStore.checkAccount(Number(currentPhone));
-  }, [setOpenModal, contactStore, currentPhone]);
+    chatsListStore.findChatByPhone(Number(currentPhone));
+  }, [setOpenModal, currentPhone]);
 
   const handleCancel = useCallback(() => {
     setOpenModal(false);
@@ -69,7 +69,6 @@ const ChatPage = observer(() => {
                             <Title
                                 level={4}
                                 style={{
-                                    color: '#fff',
                                     margin: 0
                                 }}
                             >

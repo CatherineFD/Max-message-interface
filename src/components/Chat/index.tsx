@@ -9,6 +9,10 @@ const { Title } = Typography;
 export const Chat = observer(() => {
     const chat = activeChatStore.currentChat;
 
+    const handleSendMessage = (message: string) => {
+        activeChatStore.sendMessage(message)
+    };
+
     if (!chat) return (
         <div style={{
             minHeight: '100px',
@@ -50,7 +54,7 @@ export const Chat = observer(() => {
             <div>
                 <MessageInput
                     loading={chat.isLoadingMessages}
-                    onSendMessage={activeChatStore.sendMessage}
+                    onSendMessage={handleSendMessage}
                 />
             </div>
         </div>

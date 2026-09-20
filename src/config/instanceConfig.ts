@@ -3,8 +3,12 @@ export interface InstanceConfig {
     apiTokenInstance: string;
 }
 
+export const enum configNames {
+    instanceMax = 'instance_config_max',
+}
+
 export const getInstanceConfig = (): InstanceConfig | null => {
-    const stored = localStorage.getItem('instance_config');
+    const stored = localStorage.getItem(configNames.instanceMax);
     if (stored) {
         try {
             return JSON.parse(stored);
@@ -17,5 +21,5 @@ export const getInstanceConfig = (): InstanceConfig | null => {
 };
 
 export const setInstanceConfig = (config: InstanceConfig) => {
-    localStorage.setItem('instance_config', JSON.stringify(config));
+    localStorage.setItem(configNames.instanceMax, JSON.stringify(config));
 };

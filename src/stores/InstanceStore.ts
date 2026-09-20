@@ -1,5 +1,5 @@
-import { makeAutoObservable, runInAction } from "mobx";
-import { chatApi } from "../api/chatApi";
+import { makeAutoObservable } from "mobx";
+import { configNames } from '../config/instanceConfig';
 
 interface InstanceConfig {
     idInstance: string;
@@ -18,7 +18,7 @@ class InstanceStore {
     }
 
     private loadFromStorage() {
-        const saved = localStorage.getItem('instance_config');
+        const saved = localStorage.getItem(configNames.instanceMax);
         if (saved) {
             try {
                 this.config = JSON.parse(saved);
@@ -30,52 +30,18 @@ class InstanceStore {
 
     // Сохранение в localStorage
     private saveToStorage(config: InstanceConfig) {
-        localStorage.setItem('instance_config', JSON.stringify(config));
+        localStorage.setItem(configNames.instanceMax, JSON.stringify(config));
     }
 
-    async setConfig(values: InstanceConfig): Promise<boolean> {
-        this.isLoading = true;
-        this.error = null;
-
-        try {
-            // Проверяем подключение к API
-            const isValid = await this.testConnection();
-            
-            if (!isValid) {
-                throw new Error('Неверные данные экземпляра');
-            }
-
-            runInAction(() => {
-                this.config = values;
-                this.saveToStorage(values);
-                this.isLoading = false;
-                this.isConnected = true;
-            });
-
-            return true;
-        } catch (error) {
-            runInAction(() => {
-                this.error = error instanceof Error ? error.message : 'Не удалось подключиться к API';
-                this.isLoading = false;
-            });
-            return false;
-        }
-    }
-
-    async testConnection(): Promise<boolean> {
-        try {
-            await chatApi.getContacts({ count: 1 });
-            return true;
-        } catch (error) {
-            console.error('Ошибка подключения:', error);
-            return false;
-        }
+    setConfig(values: InstanceConfig) {
+        this.config = values;
+        this.saveToStorage(values);
     }
 
     clearConfig() {
         this.config = null;
         this.isConnected = false;
-        localStorage.removeItem('instance_config');
+        localStorage.removeItem(configNames.instanceMax);
     }
 
     get isConfigured(): boolean {

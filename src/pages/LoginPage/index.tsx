@@ -12,11 +12,8 @@ export const LoginPage: React.FC = observer(() => {
     const from = (location.state)?.from?.pathname || '/';
 
     const handleSubmit = async (values: { idInstance: string; apiTokenInstance: string }) => {
-        const success = await instanceStore.setConfig(values);
-        
-        if (success) {
-            navigate(from, { replace: true });
-        }
+        instanceStore.setConfig(values);
+        navigate(from, { replace: true });
     };
 
     return (
