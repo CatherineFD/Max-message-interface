@@ -23,14 +23,10 @@ class ActiveChatStore {
     async openChat(chatId: string) {
         this.currentChatId = chatId;
         
-        // Если детальная инфа еще не загружена (или устарела), запрашиваем её
         const chat = this.currentChat;
         if (chat && !chat.avatar) { 
             await this.loadChatInfo(chatId);
         }
-        
-        // Загружаем сообщения (логика загрузки сообщений тут)
-        // await this.loadMessages(chatId);
     }
 
     async loadChatInfo(chatId: string) {
@@ -40,7 +36,6 @@ class ActiveChatStore {
             runInAction(() => {
                 const chat = chatsListStore.getChatById(chatId);
                 if (chat) {
-                    // "Обогащаем" существующую модель данными из ChatInfo
                     chat.updateFromInfo(info); 
                 }
                 this.isLoadingInfo = false;

@@ -1,7 +1,48 @@
-function LoginPage() {
-    return (
-        <></>
-    )
-}
+import React from 'react';
+import { observer } from 'mobx-react-lite';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Typography } from 'antd';
+import { instanceStore } from '../../stores/InstanceStore';
+import { InstanceSettingsForm } from '../../components/InstanceSettingsForm';
 
-export default LoginPage;
+export const LoginPage: React.FC = observer(() => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const from = (location.state)?.from?.pathname || '/';
+
+    const handleSubmit = async (values: { idInstance: string; apiTokenInstance: string }) => {
+        const success = await instanceStore.setConfig(values);
+        
+        if (success) {
+            navigate(from, { replace: true });
+        }
+    };
+
+    return (
+        <div style={{
+            minHeight: '100vh',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#f0f2f5',
+            padding: '20px',
+        }}>
+            <div style={{ width: '100%', maxWidth: 500 }}>
+                <div style={{ textAlign: 'center', marginBottom: 32 }}>
+                    <Typography.Title level={2}>
+                        Max Messenger
+                    </Typography.Title>
+                    <Typography.Text type="secondary">
+                        Введите данные вашего экземпляра для продолжения
+                    </Typography.Text>
+                </div>
+
+                <InstanceSettingsForm
+                    onSubmit={handleSubmit}
+                    isLoading={instanceStore.isLoading}
+                />
+            </div>
+        </div>
+    );
+});

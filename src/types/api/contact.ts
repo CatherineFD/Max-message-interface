@@ -35,3 +35,14 @@ export type ChatInfo = {
     phoneNumber: number;
     phoneNumberTimestamp: number;
 }
+
+export type CreateContactPayload = {
+    chatId: string;
+    firstName: string;
+    lastName: string;
+}
+
+export type CreateContaceResponse = {
+    addContact: boolean;
+    messsage: string
+}

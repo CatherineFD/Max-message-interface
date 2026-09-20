@@ -7,7 +7,10 @@ import type {
     ChatResponse,
     ChatInfoPayload,
     ChatInfo,
+    CreateContactPayload,
+    CreateContaceResponse,
 } from '../types/api/contact';
+import { getInstanceConfig } from '../config/instanceConfig';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 const waInstance = '310022739057';
@@ -16,6 +19,21 @@ const apiTokenInstance = '1ee0188248de4967abc5ea37e931549ee9039a1a47e746ca8e';
 const api = axios.create({
   baseURL: API_BASE,
   timeout: 10000,
+});
+
+api.interceptors.request.use((config) => {
+    const instanceConfig = getInstanceConfig();
+    if (!instanceConfig) return config;
+
+    const { idInstance, apiTokenInstance } = instanceConfig;
+
+    if (config.url) {
+        config.url = config.url
+            .replace('{idInstance}', idInstance)
+            .replace('{apiTokenInstance}', apiTokenInstance);
+    }
+
+    return config;
 });
 
 //TODO правильные запросы сделать
@@ -37,6 +55,7 @@ export const chatApi = {
         return data;
     },
 
+    //TODO в чем разница getChats и getContacts
     async getContacts(params?: ContactPayload): Promise<ContactsList[]> {
         const { data } = await api.get<ContactsList[]>(`/waInstance${waInstance}/getContacts/${apiTokenInstance}?count=${params?.count}`);
 
@@ -51,6 +70,12 @@ export const chatApi = {
 
     async getChatInfo(payload: ChatInfoPayload): Promise<ChatInfo> {
         const { data } = await api.post<ChatInfo>(`/waInstance${waInstance}/getContactInfo/${apiTokenInstance}`, payload);
+
+        return data;
+    },
+
+    async addContact(payload: CreateContactPayload): Promise<CreateContaceResponse> {
+        const { data } = await api.post<CreateContaceResponse>(`/waInstance${waInstance}/addContact/${apiTokenInstance}`, payload);
 
         return data;
     }

@@ -1,13 +1,19 @@
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
-import LoginPage from './pages/LoginPage';
+import { LoginPage } from './pages/LoginPage';
 import ChatPage from './pages/ChatPage';
 import './App.css';
+import { ProtectedRoute } from './components/route/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainLayout><Outlet /></MainLayout>,
+    element: (
+      <ProtectedRoute>
+        <MainLayout>
+          <Outlet />
+        </MainLayout>
+      </ProtectedRoute>),
     children: [
       { index: true, element: <ChatPage />},
     ],
@@ -15,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+  {
+      path: '*',
+      element: <div>404 - Страница не найдена</div>,
   },
 ]);
 

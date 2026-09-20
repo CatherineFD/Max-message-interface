@@ -9,4 +9,6 @@ export interface Message {
 export interface SendMessagePayload {
   chatId: string;
   message: string;
+  typingTime?: number;
+  quotedMessageId?: string;
 }
