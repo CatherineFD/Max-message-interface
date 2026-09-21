@@ -7,6 +7,7 @@ import { ChatsSidebar } from '../../components/ChatsSidebar';
 import { Chat as ChatComponent } from '../../components/Chat';
 import { chatsListStore } from '../../stores/ChatsListStore';
 import styles from './ChatPage.module.css';
+import { activeChatStore } from '../../stores/ActiveChatStore';
 
 const { Title } = Typography;
 
@@ -19,9 +20,13 @@ const ChatPage = observer(() => {
     setCurrentPhone(value);
   }, [setCurrentPhone]);
 
-  const handleConfirm = useCallback(() => {
+  const handleConfirm = useCallback(async () => {
     setOpenModal(false);
-    chatsListStore.findChatByPhone(Number(currentPhone));
+    const chatId = await chatsListStore.findChatByPhone(Number(currentPhone));
+
+    if (chatId) {
+        activeChatStore.openChat(chatId);
+    }
   }, [setOpenModal, currentPhone]);
 
   const handleCancel = useCallback(() => {

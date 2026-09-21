@@ -13,7 +13,7 @@ class ChatsListStore {
     searchError: string | null = null;
 
     constructor() {
-        this.loadContacts();
+        // this.loadContacts();
         this.check();
         makeAutoObservable(this);
     }

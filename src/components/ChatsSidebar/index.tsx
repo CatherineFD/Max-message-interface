@@ -26,7 +26,6 @@ export const ChatsSidebar = observer(({ openModal, handleOpenModal }: ChatsSideb
     const currentChatId = activeChatStore.currentChatId;
     const isLoading = chatsListStore.isLoading;
 
-    // ✅ Мемоизируем обработчики, чтобы не пересоздавать при каждом рендере
     const toggleCollapse = useCallback(() => setCollapsed(prev => !prev), []);
     const toggleModal = useCallback(() => handleOpenModal(!openModal), [openModal, handleOpenModal]);
     const handleChatClick = useCallback((chatId: string) => {
