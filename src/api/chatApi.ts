@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Message, SendMessagePayload, MessageResponse } from '../types/api/message';
+import type { SendMessagePayload, MessageResponse } from '../types/api/message';
 import type {
   ContactPayload,
   ContactsList,
@@ -48,15 +48,6 @@ export const chatApi = {
     const { data } = await api.post<MessageResponse>(
       '/waInstance{idInstance}/sendMessage/{apiTokenInstance}',
       payload
-    );
-    return data;
-  },
-
-  async fetchMessages(since?: number): Promise<Message[]> {
-    const params = since ? { since } : {};
-    const { data } = await api.get<Message[]>(
-      '/waInstance{idInstance}/receiveNotification/{apiTokenInstance}',
-      { params }
     );
     return data;
   },

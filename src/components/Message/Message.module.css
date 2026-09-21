@@ -1,7 +1,15 @@
 .message {
     display: flex;
     margin: 4px 12px;
-    max-width: 70%;
+    max-width: 100%;
+}
+
+.messageOut {
+    justify-content: flex-start;
+}
+
+.messageIn {
+    justify-content: flex-end;
 }
 
 .incoming { align-self: flex-start; }

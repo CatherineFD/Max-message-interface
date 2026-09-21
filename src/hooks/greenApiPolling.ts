@@ -1,7 +1,7 @@
 import { activeChatStore } from '../stores/ActiveChatStore';
 import { messagesStore } from '../stores/MessagesStore';
 import { chatApi } from '../api/chatApi';
-import { MessageModel } from '../model/MessageModel';
+import { MessageDirection, MessageModel } from '../model/MessageModel';
 import type { ReceiveNotificationBody } from '../types/api/message';
 
 let pollingActive = false;
@@ -20,8 +20,8 @@ export function startGreenApiPolling() {
         }
 
         const { receiptId, body } = notification;
-        handleMessageFromApi(body);
         await chatApi.deleteNotification(receiptId);
+        handleMessageFromApi(body);       
       } catch {
         await sleep(5000);
       }
@@ -44,10 +44,12 @@ function handleMessageFromApi(body: ReceiveNotificationBody) {
 
   const text = body.messageData.textMessageData.textMessage || '';
 
-  messagesStore.addIncomingMessage(chatId, {
+  messagesStore.addMessage(chatId, {
     id: body.idMessage,
     text,
-    type: 'text'
+    type: 'text',
+    status: 'delivered',
+    direction: MessageDirection.outgoing,
   });
 
   if (activeChatStore.currentChatId === chatId && activeChatStore.chat) {
@@ -56,7 +58,8 @@ function handleMessageFromApi(body: ReceiveNotificationBody) {
       chatId,
       text,
       type: 'text',
-      status: 'delivered'
+      status: 'delivered',
+      direction: MessageDirection.outgoing,
     });
     activeChatStore.chat.addMessage(newMsg);
   }

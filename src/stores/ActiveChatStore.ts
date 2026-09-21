@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { chatsListStore } from "./ChatsListStore";
 import { chatApi } from "../api/chatApi";
 import type { ChatModel } from "../model/ChatModel";
-import { MessageModel } from "../model/MessageModel";
+import { messagesStore } from "./MessagesStore";
 
 
 //TODO загружать диалог
@@ -64,14 +64,12 @@ class ActiveChatStore {
         try {
             const response = await chatApi.sendMessage({ chatId: this.currentChatId, message});
 
-            const newMessage = new MessageModel({
+            messagesStore.addMessage(this.currentChatId, {
                 id: response.idMessage,
-                chatId: this.currentChatId,
                 text: message,
-                status: "sending",
-                type: "text"
+                status: 'sending',
+                type: 'text',
             });
-            this.chat?.addMessage(newMessage);
         } catch {
             this.setError('Ошибка при отправке сообщения');
         } finally {

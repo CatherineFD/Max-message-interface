@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { MessageModel } from "../../model/MessageModel";
+import { MessageDirection, MessageModel } from "../../model/MessageModel";
 import styles from "./Message.module.css";
 
 interface MessageProps {
@@ -18,7 +18,7 @@ export const Message: React.FC<MessageProps> = observer(({ data }) => {
 
     return (
         <div
-            className={`${styles.message}`}
+            className={`${styles.message} ${data.direction === MessageDirection.incoming ? styles.messageIn : styles.messageOut}`}
             data-message-id={data.id}
         >
             <div className={styles.bubble}>

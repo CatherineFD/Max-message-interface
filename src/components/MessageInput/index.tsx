@@ -41,6 +41,7 @@ const MessageInput = observer(function MessageInput(props: MessageInputProps) {
         disabled={loading}
         size="large"
       />
+
       <Button
         type="primary"
         icon={<SendOutlined />}

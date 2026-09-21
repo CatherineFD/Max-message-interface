@@ -1,5 +1,6 @@
-import { makeAutoObservable } from "mobx";
-import { MessageModel } from "../model/MessageModel";
+// src/stores/MessagesStore.ts
+import { makeAutoObservable, runInAction } from "mobx";
+import { MessageDirection, MessageModel } from "../model/MessageModel";
 
 class MessagesStore {
   messagesByChat = new Map<string, MessageModel[]>();
@@ -8,18 +9,26 @@ class MessagesStore {
     makeAutoObservable(this);
   }
 
-  addIncomingMessage(chatId: string, payload: Partial<MessageModel>) {
-    const list = this.messagesByChat.get(chatId) || [];
-    const msg = new MessageModel({
-      id: payload.id!,
-      chatId,
-      text: payload.text || '',
-      type: payload.type || 'text',
-      status: 'delivered',
-      ...payload
+  addMessage(chatId: string, data: Partial<MessageModel>) {
+    runInAction(() => {
+      let list = this.messagesByChat.get(chatId);
+      if (!list) {
+        list = [];
+        this.messagesByChat.set(chatId, list);
+      }
+
+      const msg = new MessageModel({
+        id: data.id!,
+        chatId,
+        text: data.text ?? '',
+        type: data.type ?? 'text',
+        status: data.status ?? 'delivered',
+        direction: data.direction ?? MessageDirection.incoming,
+      });
+
+      list.push(msg);
+      this.messagesByChat.set(chatId, list);
     });
-    list.push(msg);
-    this.messagesByChat.set(chatId, list);
   }
 
   getMessages(chatId: string) {

@@ -4,6 +4,7 @@ import { Message } from "../Message";
 import MessageInput from "../MessageInput";
 import { Alert, Typography } from "antd";
 import styles from './Chat.module.css';
+import { messagesStore } from "../../stores/MessagesStore";
 
 const { Title } = Typography;
 
@@ -31,6 +32,8 @@ export const Chat = observer(() => {
             </Title>
         </div>
     );
+
+    const messages = messagesStore.getMessages(chat.chatId);
 
     return (
         <div className={styles.chatBackground}>
@@ -66,7 +69,7 @@ export const Chat = observer(() => {
                         minHeight: 0,
                     }}
                 >
-                    {chat.messages.map(msg => <Message key={msg.id} data={msg} />)}
+                    {messages.map(msg => <Message key={msg.id} data={msg} />)}
                 </div>
             </div>
 

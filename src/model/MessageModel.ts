@@ -2,6 +2,10 @@ import { makeAutoObservable } from "mobx";
 
 export type MessageStatus = "sending" | "sent" | "delivered" | "read" | "error";
 export type MessageType = "text" | "image" | "voice" | "file" | "system";
+export const enum MessageDirection {
+    incoming = 'incoming', 
+    outgoing = 'outgoing',
+}
 
 export class MessageModel {
     id: string;
@@ -18,6 +22,7 @@ export class MessageModel {
     replyToId?: string;
     editedAt?: number;
     isDeleted: boolean = false;
+    direction: MessageDirection = MessageDirection.incoming;
 
     constructor(data: Partial<MessageModel> & { id: string; chatId: string; }) {
         Object.assign(this, data);
