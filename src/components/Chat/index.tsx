@@ -3,6 +3,7 @@ import { activeChatStore } from "../../stores/ActiveChatStore";
 import { Message } from "../Message";
 import MessageInput from "../MessageInput";
 import { Alert, Typography } from "antd";
+import styles from './Chat.module.css';
 
 const { Title } = Typography;
 
@@ -32,31 +33,48 @@ export const Chat = observer(() => {
     );
 
     return (
-        <div>
+        <div className={styles.chatBackground}>
             {activeChatStore.error && (
                 <Alert
-                    message={activeChatStore.error}
+                    title={activeChatStore.error}
                     type="error"
                     showIcon
                     closable
                     style={{ marginBottom: 16 }}
                 />
             )}
-            <header>
-                <h2>{chat.name}</h2>
-                <span>Был в сети: {chat.lastSeen}</span> {/* lastSeen появится после loadChatInfo */}
-            </header>
-            
-            <div className="messages">
-                {chat.messages.map(msg => <Message key={msg.id} data={msg} />)}
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column', 
+                    flex: 1, 
+                    minHeight: 0,
+                }}
+            >
+                <header
+                    className={styles.chatHeader}
+                >
+                    <h2>{chat.name}</h2>
+                    <span>Был в сети: {chat.lastSeen}</span> {/* lastSeen появится после loadChatInfo */}
+                </header>
+                
+                <div
+                    style={{
+                        height: '100%',
+                        flex: 1,
+                        overflowY: 'auto',
+                        minHeight: 0,
+                    }}
+                >
+                    {chat.messages.map(msg => <Message key={msg.id} data={msg} />)}
+                </div>
             </div>
 
-            <div>
-                <MessageInput
-                    loading={chat.isLoadingMessages}
-                    onSendMessage={handleSendMessage}
-                />
-            </div>
+
+            <MessageInput
+                loading={chat.isLoadingMessages}
+                onSendMessage={handleSendMessage}
+            />
         </div>
     );
 });

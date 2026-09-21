@@ -2,16 +2,19 @@ import { useCallback, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Input, Button, Space } from 'antd';
 import { SendOutlined } from '@ant-design/icons';
+import styles from './MessageInput.module.css';
 
 interface MessageInputProps {
     onSendMessage: (message: string) => void;
     loading: boolean;
+    placeholder?: string;
 }
 
 const MessageInput = observer(function MessageInput(props: MessageInputProps) {
     const {
         onSendMessage,
         loading, 
+        placeholder = 'Введите сообщение...',
     } = props;
   const [text, setText] = useState('');
 
@@ -29,12 +32,12 @@ const MessageInput = observer(function MessageInput(props: MessageInputProps) {
   };
 
   return (
-    <Space.Compact style={{ width: '100%' }}>
+    <Space.Compact className={styles.container}>
       <Input
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Введите сообщение..."
+        placeholder={placeholder}
         disabled={loading}
         size="large"
       />

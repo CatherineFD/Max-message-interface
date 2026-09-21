@@ -1,0 +1,20 @@
+.chatBackground {
+    background: linear-gradient(135deg, #e0f7fa 0%, #e8f5e9 50%, #b2ebf2 100%);
+    position: relative;
+
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    flex: 1;
+}
+
+.chatHeader {
+    padding: 10px 0;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}

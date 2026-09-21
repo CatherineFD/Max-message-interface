@@ -1,35 +1,17 @@
 import { useState, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  PlusCircleOutlined,
-} from '@ant-design/icons';
-import { Button, Layout } from 'antd';
-import Modal from '../../components/Modal';
-import PhoneInput from '../../components/Input/PhoneInput';
+import { Modal } from 'antd';
+import PhoneInput from '../../components/Base/Input/PhoneInput';
 import { Typography } from 'antd';
 import { ChatsSidebar } from '../../components/ChatsSidebar';
 import { Chat as ChatComponent } from '../../components/Chat';
 import { chatsListStore } from '../../stores/ChatsListStore';
+import styles from './ChatPage.module.css';
 
 const { Title } = Typography;
 
-const { Sider } = Layout;
-
-const siderStyle: React.CSSProperties = {
-  overflow: 'auto',
-  height: '100vh',
-  position: 'sticky',
-  insetInlineStart: 0,
-  top: 0,
-  scrollbarWidth: 'thin',
-  scrollbarGutter: 'stable',
-  background: '#c9d9e1',
-};
 
 const ChatPage = observer(() => {
-  const [collapsed, setCollapsed] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [currentPhone, setCurrentPhone] = useState('');
 
@@ -48,66 +30,15 @@ const ChatPage = observer(() => {
 
   return (
     <>
-        <div style={{
-            display: 'flex',
-        }}>
-            <Sider
-                trigger={null}
-                collapsible
-                collapsed={collapsed}
-                style={siderStyle}
-                width={300}
-            >
-                <div style={{
-                    color: '#fff',
-                    display: 'flex',
-                    justifyContent: collapsed ? 'center' : 'space-between',
-                    alignItems: 'center',
-                    padding: '5px',
-                }}>
-                    {
-                        !collapsed && (
-                            <Title
-                                level={4}
-                                style={{
-                                    margin: 0
-                                }}
-                            >
-                                Чаты    
-                            </Title>
-                        )
-                    }
-                    
+        <div className={
+            styles.container
+        }>
+            <ChatsSidebar
+                openModal={openModal}
+                handleOpenModal={setOpenModal}
+            />
 
-                    <Button
-                        onClick={() => setOpenModal(!openModal)}
-                    >
-                        <PlusCircleOutlined />
-                    </Button>
-                </div>
-                <ChatsSidebar/>
-            </Sider>
-            <div
-                style={{
-                    position: 'relative',
-                    width: '100%',
-                }}
-            >
-                <Button
-                    type="text"
-                    icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                    onClick={() => setCollapsed(!collapsed)}
-                    style={{
-                        fontSize: '16px',
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        zIndex: 1000,
-                    }}
-                />
-
-                <ChatComponent/>
-            </div>
+            <ChatComponent/>
         </div>
 
         <Modal

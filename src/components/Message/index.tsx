@@ -5,10 +5,9 @@ import styles from "./Message.module.css";
 
 interface MessageProps {
     data: MessageModel;
-    showAvatar?: boolean;
 }
 
-export const Message: React.FC<MessageProps> = observer(({ data, showAvatar = true }) => {
+export const Message: React.FC<MessageProps> = observer(({ data }) => {
     if (data.isDeleted) {
         return (
             <div className={styles.deleted}>
@@ -19,15 +18,9 @@ export const Message: React.FC<MessageProps> = observer(({ data, showAvatar = tr
 
     return (
         <div
-            className={`${styles.message} ${data.isOutgoing ? styles.outgoing : styles.incoming}`}
+            className={`${styles.message}`}
             data-message-id={data.id}
         >
-            {showAvatar && !data.isOutgoing && (
-                <div className={styles.avatar}>
-                    {/* Аватар отправителя */}
-                </div>
-            )}
-
             <div className={styles.bubble}>
                 {/* Ответ на сообщение (reply) */}
                 {data.replyToId && (
@@ -39,20 +32,9 @@ export const Message: React.FC<MessageProps> = observer(({ data, showAvatar = tr
                 {/* Контент по типу */}
                 {data.type === "text" && <div className={styles.text}>{data.text}</div>}
                 
-                {data.type === "image" && data.mediaUrl && (
-                    <img src={data.mediaUrl} alt="" className={styles.image} />
-                )}
-                
-                {data.type === "voice" && (
-                    <div className={styles.voice}>
-                        <button className={styles.playBtn}>▶</button>
-                        <span>{data.duration} сек</span>
-                    </div>
-                )}
 
-                {/* Метаданные: время + статус */}
+                {/* Метаданные: статус */}
                 <div className={styles.meta}>
-                    <span className={styles.time}>{data.formattedTime}</span>
                     {data.editedAt && <span className={styles.edited}>изменено</span>}
                 </div>
             </div>
