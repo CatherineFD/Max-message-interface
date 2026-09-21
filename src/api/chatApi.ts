@@ -110,10 +110,7 @@ export const chatApi = {
      */
     async deleteNotification(receiptId: number): Promise<boolean> {
         try {
-            const { data } = await api.delete<boolean>(
-                `/waInstance{idInstance}/deleteNotification/{apiTokenInstance}`,
-                { params: { receiptId } }
-            );
+            const { data } = await api.delete<boolean>(`/waInstance{idInstance}/deleteNotification/{apiTokenInstance}/${receiptId}`);
             return data;
         } catch (error) {
             console.error(`Не удалось удалить уведомление ${receiptId}:`, error);

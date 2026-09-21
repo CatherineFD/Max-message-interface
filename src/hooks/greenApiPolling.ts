@@ -14,7 +14,6 @@ export function startGreenApiPolling() {
     while (pollingActive) {
       try {
         const notification = await chatApi.receiveNotification();
-        console.log(notification);
         if (!notification) {
           await sleep(1000);
           continue;
@@ -31,7 +30,6 @@ export function startGreenApiPolling() {
 }
 
 export function stopGreenApiPolling() {
-  console.log('stopGreenApiPolling');
   pollingActive = false;
 }
 
@@ -45,7 +43,6 @@ function handleMessageFromApi(body: ReceiveNotificationBody) {
   if (!chatId) return;
 
   const text = body.messageData.textMessageData.textMessage || '';
-  console.log(text);
 
   messagesStore.addIncomingMessage(chatId, {
     id: body.idMessage,

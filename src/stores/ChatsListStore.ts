@@ -14,7 +14,6 @@ class ChatsListStore {
 
     constructor() {
         // this.loadContacts();
-        this.check();
         makeAutoObservable(this);
     }
 
@@ -24,14 +23,6 @@ class ChatsListStore {
 
     getChatById(chatId: string): ChatModel | undefined {
         return this.chatsMap.get(chatId);
-    }
-    async check() {
-        try {
-            const response = await chatApi.GetWebhooksCount();
-            console.log(response);
-        } catch {
-            console.log('error check');
-        }
     }
 
     async loadContacts() {
