@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Avatar, Typography } from 'antd';
-import { ChatModel } from '../../stores/ChatModel';
+import { ChatModel } from '../../model/ChatModel';
 import './ChatListItem.css'; // стили ниже
 
 interface ChatListItemProps {

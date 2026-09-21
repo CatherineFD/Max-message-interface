@@ -12,7 +12,7 @@ export const ChatsSidebar: React.FC = observer(() => {
     if (chatsListStore.isLoading) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
-                <Spin size="large" tip="Загрузка чатов..." />
+                <Spin size="large" description="Загрузка чатов..." />
             </div>
         );
     }

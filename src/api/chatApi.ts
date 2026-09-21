@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Message, SendMessagePayload } from '../types/api/message';
+import type { Message, SendMessagePayload, MessageResponse } from '../types/api/message';
 import type {
   ContactPayload,
   ContactsList,
@@ -10,6 +10,9 @@ import type {
   CreateContactPayload,
   CreateContaceResponse,
 } from '../types/api/contact';
+import type {
+  ReceiveNotification,
+} from '../types/api/message';
 import { instanceStore } from '../stores/InstanceStore';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
@@ -41,8 +44,8 @@ api.interceptors.request.use((config) => {
 });
 
 export const chatApi = {
-  async sendMessage(payload: SendMessagePayload): Promise<Message> {
-    const { data } = await api.post<Message>(
+  async sendMessage(payload: SendMessagePayload): Promise<MessageResponse> {
+    const { data } = await api.post<MessageResponse>(
       '/waInstance{idInstance}/sendMessage/{apiTokenInstance}',
       payload
     );
@@ -89,4 +92,37 @@ export const chatApi = {
     );
     return data;
   },
+
+  /**
+     * Получение входящих уведомлений (Long Polling)
+     * @param receiveTimeout Время ожидания в секундах (от 5 до 60)
+     */
+    async receiveNotification(receiveTimeout?: number): Promise<ReceiveNotification> {
+      const { data } = await api.get<ReceiveNotification>(
+          `/waInstance{idInstance}/receiveNotification/{apiTokenInstance}`,
+          { params: { receiveTimeout } }
+      );
+      return data;
+    },
+
+    /**
+     * Удаление обработанного уведомления из очереди
+     */
+    async deleteNotification(receiptId: number): Promise<boolean> {
+        try {
+            const { data } = await api.delete<boolean>(
+                `/waInstance{idInstance}/deleteNotification/{apiTokenInstance}`,
+                { params: { receiptId } }
+            );
+            return data;
+        } catch (error) {
+            console.error(`Не удалось удалить уведомление ${receiptId}:`, error);
+            return false;
+        }
+    },
+
+    async GetWebhooksCount(): Promise<{count: number}> {
+      const { data } = await api.get<{count: number}>(`/waInstance{idInstance}/getWebhooksCount/{apiTokenInstance}`);
+      return data;
+    }
 };

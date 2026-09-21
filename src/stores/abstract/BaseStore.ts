@@ -1,5 +1,5 @@
 import { makeObservable, observable, action } from "mobx";
-import type { ErrorState } from '../types/error';
+import type { ErrorState } from '../../types/error';
 
 export abstract class BaseStore {
     isLoading: boolean;

@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
-import { MessageModel } from "../../stores/MessageModel";
+import { MessageModel } from "../../model/MessageModel";
 import styles from "./Message.module.css";
 
 interface MessageProps {

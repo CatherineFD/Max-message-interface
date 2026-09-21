@@ -1,29 +1,39 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { chatsListStore } from "./ChatsListStore";
 import { chatApi } from "../api/chatApi";
+import type { ChatModel } from "../model/ChatModel";
+import { MessageModel } from "../model/MessageModel";
 
+
+//TODO загружать диалог
 class ActiveChatStore {
     currentChatId: string | null = null;
     isLoadingInfo: boolean = false;
     error: string | null = null;
+    chat: ChatModel | null = null;
 
     constructor() {
         makeAutoObservable(this);
     }
 
     get currentChat() {
-        if (!this.currentChatId) return null;
-        return chatsListStore.getChatById(this.currentChatId);
+        return this.chat;
     }
 
     setError(error: string) {
         this.error = error;
     }
 
+    setChat() {
+        if (!this.currentChatId) return null;
+        this.chat = chatsListStore.getChatById(this.currentChatId) || null;
+    }
+
     async openChat(chatId: string) {
         this.currentChatId = chatId;
-        
-        const chat = this.currentChat;
+        this.setChat();
+
+        const chat = chatsListStore.getChatById(this.currentChatId);
         if (chat && !chat.avatar) { 
             await this.loadChatInfo(chatId);
         }
@@ -53,7 +63,15 @@ class ActiveChatStore {
 
         try {
             const response = await chatApi.sendMessage({ chatId: this.currentChatId, message});
-            console.log(response);
+
+            const newMessage = new MessageModel({
+                id: response.idMessage,
+                chatId: this.currentChatId,
+                text: message,
+                status: "sending",
+                type: "text"
+            });
+            this.chat?.addMessage(newMessage);
         } catch {
             this.setError('Ошибка при отправке сообщения');
         } finally {

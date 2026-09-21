@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { ChatModel } from "./ChatModel";
+import { ChatModel } from "../model/ChatModel";
 import { chatApi } from "../api/chatApi";
 
 class ChatsListStore {
@@ -13,6 +13,8 @@ class ChatsListStore {
     searchError: string | null = null;
 
     constructor() {
+        this.loadContacts();
+        this.check();
         makeAutoObservable(this);
     }
 
@@ -22,6 +24,14 @@ class ChatsListStore {
 
     getChatById(chatId: string): ChatModel | undefined {
         return this.chatsMap.get(chatId);
+    }
+    async check() {
+        try {
+            const response = await chatApi.GetWebhooksCount();
+            console.log(response);
+        } catch {
+            console.log('error check');
+        }
     }
 
     async loadContacts() {

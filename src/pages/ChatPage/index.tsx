@@ -56,6 +56,7 @@ const ChatPage = observer(() => {
                 collapsible
                 collapsed={collapsed}
                 style={siderStyle}
+                width={300}
             >
                 <div style={{
                     color: '#fff',

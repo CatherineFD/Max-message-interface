@@ -19,6 +19,11 @@ export class ChatModel {
     messagesOrder: string[] = [];
     isLoadingMessages: boolean = false;
 
+    constructor(chatId: string) {
+        this.chatId = chatId;
+        makeAutoObservable(this);
+    }
+
     get messages(): MessageModel[] {
         return this.messagesOrder
             .map(id => this.messagesMap.get(id))
@@ -34,11 +39,6 @@ export class ChatModel {
     updateMessageStatus(messageId: string, status: MessageStatus) {
         const msg = this.messagesMap.get(messageId);
         if (msg) msg.updateStatus(status);
-    }
-
-    constructor(chatId: string) {
-        this.chatId = chatId;
-        makeAutoObservable(this);
     }
 
     updateFromList(data: ContactsList) {
