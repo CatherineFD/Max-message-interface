@@ -26,7 +26,10 @@ const router = createBrowserRouter([
       path: '*',
       element: <div>404 - Страница не найдена</div>,
   },
-]);
+],
+  {
+    basename: '/Max-message-interface',
+  });
 
 function App() {
   return <RouterProvider router={router} />;
