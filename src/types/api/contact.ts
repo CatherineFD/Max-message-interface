@@ -10,6 +10,17 @@ export type ContactsList = {
     type: string
 }
 
+export type ChatInfo = {
+    name: string;
+    avatar: string;
+    contactName: string;
+    chatId: string;
+    chatType: string;
+    lastSeen: string;
+    phoneNumber: number;
+    phoneNumberTimestamp: number;
+}
+
 export type ChatPayload = {
     phoneNumber: number;
     force?: boolean;
@@ -23,17 +34,6 @@ export type ChatResponse = {
 
 export type ChatInfoPayload = {
     chatId: string;
-}
-
-export type ChatInfo = {
-    name: string;
-    avatar: string;
-    contactName: string;
-    chatId: string;
-    chatType: string;
-    lastSeen: string;
-    phoneNumber: number;
-    phoneNumberTimestamp: number;
 }
 
 export type CreateContactPayload = {

@@ -14,6 +14,7 @@ import type {
   ReceiveNotification,
 } from '../types/api/message';
 import { instanceStore } from '../stores/InstanceStore';
+import { apiCache } from './cache';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
@@ -68,12 +69,14 @@ export const chatApi = {
     return data;
   },
 
-  async getChatInfo(payload: ChatInfoPayload): Promise<ChatInfo> {
-    const { data } = await api.post<ChatInfo>(
-      '/waInstance{idInstance}/getContactInfo/{apiTokenInstance}',
-      payload
-    );
-    return data;
+  async getChatInfo(payload: ChatInfoPayload) {
+    return apiCache.dedupedRequest(`chatInfo:${payload.chatId}`, async () => {
+      const { data } = await api.post<ChatInfo>(
+        '/waInstance{idInstance}/getContactInfo/{apiTokenInstance}',
+        payload
+      );
+      return data;
+    });
   },
 
   async addContact(payload: CreateContactPayload): Promise<CreateContaceResponse> {

@@ -1,11 +1,11 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Avatar, Typography } from 'antd';
-import { ChatModel } from '../../model/ChatModel';
 import './ChatListItem.css';
+import type { ContactsList } from '../../../../types/api/contact';
 
 interface ChatListItemProps {
-    chat: ChatModel;
+    chat: ContactsList;
     isActive: boolean;
     onClick: (chatId: string) => void;
 }
@@ -22,9 +22,9 @@ export const ChatListItem: React.FC<ChatListItemProps> = observer(({ chat, isAct
             {/* Аватар */}
             <Avatar 
                 size={48} 
-                src={chat.avatar || undefined} 
+                src={undefined} 
                 style={{ 
-                    backgroundColor: chat.avatar ? 'transparent' : '#1890ff',
+                    backgroundColor: '#1890ff',
                     flexShrink: 0
                 }}
             >
@@ -41,7 +41,7 @@ export const ChatListItem: React.FC<ChatListItemProps> = observer(({ chat, isAct
 
                 <div className="chat-list-item__footer">
                     <Typography.Text type="secondary" ellipsis className="chat-list-item__preview">
-                        {chat.lastMessagePreview || 'Нет сообщений'}
+                        {'Нет сообщений'}
                     </Typography.Text>
                 </div>
             </div>

@@ -6,31 +6,39 @@ import {
     MenuUnfoldOutlined,
     PlusCircleOutlined,
 } from '@ant-design/icons';
-import { chatsListStore } from '../../stores/ChatsListStore';
-import { activeChatStore } from '../../stores/ActiveChatStore';
 import { ChatListItem } from '../ChatListItem';
 import styles from './ChatsSidebar.module.css';
+import type { ContactsList } from '../../../../types/api/contact';
 
 const { Sider } = Layout;
 const { Title } = Typography;
 
 interface ChatsSidebarProps {
-    openModal: boolean;
-    handleOpenModal: (value: boolean) => void;
+    openModal: boolean,
+    chats:  ContactsList[],
+    isLoading: boolean,
+    activeChatId: string | null,
+    handleOpenModal: (value: boolean) => void,
+    handleOpenChat: (chatId: string) => void,
 }
 
-export const ChatsSidebar = observer(({ openModal, handleOpenModal }: ChatsSidebarProps) => {
+export const ChatsSidebar = observer((props: ChatsSidebarProps) => {
+    const {
+        openModal,
+        chats, 
+        isLoading,
+        activeChatId,
+        handleOpenModal,
+        handleOpenChat,
+    } = props;
+
     const [collapsed, setCollapsed] = useState(false);
-    
-    const chats = chatsListStore.chatsList;
-    const currentChatId = activeChatStore.currentChatId;
-    const isLoading = chatsListStore.isLoading;
 
     const toggleCollapse = useCallback(() => setCollapsed(prev => !prev), []);
     const toggleModal = useCallback(() => handleOpenModal(!openModal), [openModal, handleOpenModal]);
     const handleChatClick = useCallback((chatId: string) => {
-        activeChatStore.openChat(chatId);
-    }, []);
+        handleOpenChat(chatId);
+    }, [handleOpenChat]);
 
     return (
         <div className={styles.container}>
@@ -74,7 +82,7 @@ export const ChatsSidebar = observer(({ openModal, handleOpenModal }: ChatsSideb
                                 <ChatListItem
                                     key={chat.chatId}
                                     chat={chat}
-                                    isActive={chat.chatId === currentChatId}
+                                    isActive={chat.chatId === activeChatId}
                                     onClick={handleChatClick}
                                 />
                             ))}

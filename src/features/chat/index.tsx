@@ -1,19 +1,38 @@
 import { observer } from "mobx-react-lite";
-import { activeChatStore } from "../../stores/ActiveChatStore";
-import { Message } from "../Message";
-import MessageInput from "../MessageInput";
+import { useParams } from "react-router-dom";
 import { Alert, Typography } from "antd";
-import styles from './Chat.module.css';
-import { messagesStore } from "../../stores/MessagesStore";
+import { Message } from "./components/Message";
+import MessageInput from "./components/MessageInput";
+import ChatStore from './store';
+
+import styles from './styles.module.css';
+import { messagesStore } from "../../entities/messages/store";
+import { useEffect, useMemo } from "react";
+
 
 const { Title } = Typography;
 
 export const Chat = observer(() => {
-    const chat = activeChatStore.currentChat;
+    const { chatId } = useParams<{ chatId: string }>();
+    const store = useMemo(() => new ChatStore(), []);
+    const chat = store.currentChat;
 
     const handleSendMessage = (message: string) => {
-        activeChatStore.sendMessage(message)
+        store.sendMessage(message)
     };
+
+    useEffect(() => {
+        if (!chatId) {
+        store.clearChat();
+        return;
+        }
+
+        store.loadChat(chatId);
+
+        return () => {
+        store.clearChat();
+        };
+    }, [chatId, store]);
 
     if (!chat) return (
         <div style={{
@@ -37,9 +56,9 @@ export const Chat = observer(() => {
 
     return (
         <div className={styles.chatBackground}>
-            {activeChatStore.error && (
+            {store.error && (
                 <Alert
-                    title={activeChatStore.error}
+                    title={store.error}
                     type="error"
                     showIcon
                     closable
@@ -58,7 +77,7 @@ export const Chat = observer(() => {
                     className={styles.chatHeader}
                 >
                     <h2>{chat.name}</h2>
-                    <span>Был в сети: {chat.lastSeen}</span> {/* lastSeen появится после loadChatInfo */}
+                    <span>Был в сети: {chat.lastSeen}</span>
                 </header>
                 
                 <div
