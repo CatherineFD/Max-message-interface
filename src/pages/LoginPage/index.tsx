@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Typography } from 'antd';
-import { instanceStore } from '../../stores/InstanceStore';
+import { instanceStore } from '../../shared/stores/InstanceStore';
 import { InstanceSettingsForm } from '../../components/InstanceSettingsForm';
 
 export const LoginPage: React.FC = observer(() => {

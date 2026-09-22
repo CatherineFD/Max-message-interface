@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import type { ChatInfo, ContactsList } from "../types/api/contact";
+import type { ChatInfo, ContactsList } from "../types/contact";
 import type { MessageModel, MessageStatus } from "./MessageModel";
 
 export class ChatModel {

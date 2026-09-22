@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Avatar, Typography } from 'antd';
 import './ChatListItem.css';
-import type { ContactsList } from '../../../../types/api/contact';
+import type { ContactsList } from '../../../../types/contact';
 
 interface ChatListItemProps {
     chat: ContactsList;

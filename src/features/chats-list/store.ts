@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { chatApi } from "../../api/chatApi";
-import type { ContactsList } from "../../types/api/contact";
+import type { ContactsList } from "../../types/contact";
 
 export default class ChatsListStore {
   chatsMap: Map<string, ContactsList> = new Map();

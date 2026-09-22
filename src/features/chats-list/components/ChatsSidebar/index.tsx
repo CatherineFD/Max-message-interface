@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { ChatListItem } from '../ChatListItem';
 import styles from './ChatsSidebar.module.css';
-import type { ContactsList } from '../../../../types/api/contact';
+import type { ContactsList } from '../../../../types/contact';
 
 const { Sider } = Layout;
 const { Title } = Typography;

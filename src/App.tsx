@@ -1,12 +1,10 @@
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
-import MainLayout from './layouts/MainLayout';
 import { LoginPage } from './pages/LoginPage';
 import ChatPage from './pages/ChatPage';
-import './App.css';
 import { ProtectedRoute } from './components/route/ProtectedRoute';
 import { useEffect } from 'react';
 import { setPollingMessageHandler, startGreenApiPolling, stopGreenApiPolling } from './shared/services/greenApiPolling';
-import { messagesStore } from './entities/messages/store';
+import { messagesStore } from './shared/stores/Messages';
 import { MessageDirection, MessageModel } from './model/MessageModel';
 import { activeChatStore } from './shared/stores/ActiveChatStore';
 
@@ -15,9 +13,7 @@ const router = createBrowserRouter([
     path: '/',
     element: (
       <ProtectedRoute>
-        <MainLayout>
-          <Outlet />
-        </MainLayout>
+        <Outlet />
       </ProtectedRoute>),
     children: [
       { index: true, element: <ChatPage />},

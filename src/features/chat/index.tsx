@@ -6,7 +6,7 @@ import MessageInput from "./components/MessageInput";
 import ChatStore from './store';
 
 import styles from './styles.module.css';
-import { messagesStore } from "../../entities/messages/store";
+import { messagesStore } from "../../shared/stores/Messages";
 import { useEffect, useMemo } from "react";
 
 

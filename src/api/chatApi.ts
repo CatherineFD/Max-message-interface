@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { SendMessagePayload, MessageResponse } from '../types/api/message';
+import type { SendMessagePayload, MessageResponse } from '../types/message';
 import type {
   ContactPayload,
   ContactsList,
@@ -9,11 +9,11 @@ import type {
   ChatInfo,
   CreateContactPayload,
   CreateContaceResponse,
-} from '../types/api/contact';
+} from '../types/contact';
 import type {
   ReceiveNotification,
-} from '../types/api/message';
-import { instanceStore } from '../stores/InstanceStore';
+} from '../types/message';
+import { instanceStore } from '../shared/stores/InstanceStore';
 import { apiCache } from './cache';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';

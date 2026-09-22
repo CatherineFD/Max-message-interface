@@ -1,4 +1,4 @@
-import type { ReceiveNotificationBody } from '../../types/api/message';
+import type { ReceiveNotificationBody } from '../../types/message';
 import { chatApi } from '../../api/chatApi';
 
 type MessageHandler = (chatId: string, message: ReceiveNotificationBody) => void;
